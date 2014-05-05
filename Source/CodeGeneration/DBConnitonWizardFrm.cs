@@ -183,18 +183,17 @@ namespace ChinaBest.BaseApplication.CodeGeneration
             {
                 DataRow dr = dt.NewRow();
                 string TestServer = System.Configuration.ConfigurationManager.AppSettings["TestServer"];
-                if (string.IsNullOrEmpty(TestServer))
+                if (!string.IsNullOrEmpty(TestServer))
                 {
-                    TestServer = "localhost";
+                    dr["Name"] = TestServer;
+                    dr["Server"] = TestServer;
+                    dr["Instance"] = "";
+                    dr["IsClustered"] = true;
+                    dr["Version"] = "";
+                    dr["IsLocal"] = false;
+                    dt.Rows.InsertAt(dr, 1);
+                    dt.AcceptChanges();
                 }
-                dr["Name"] = TestServer;
-                dr["Server"] = TestServer;
-                dr["Instance"] = "";
-                dr["IsClustered"] = true;
-                dr["Version"] = "";
-                dr["IsLocal"] = false;
-                dt.Rows.InsertAt(dr, 1);
-                dt.AcceptChanges();
             }
 
             #endregion 增加测试服务器的SQLServer

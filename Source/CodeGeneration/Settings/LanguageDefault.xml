@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Languages>
+  <Language From="C#" To="default">
+    <Type From="long" To="long.MinValue" />
+    <Type From="object" To="null" />
+    <Type From="bool" To="false" />
+    <Type From="string" To="null" />
+    <Type From="DateTime" To="DateTime.MinValue" />
+    <Type From="decimal" To="decimal.MinValue" />
+    <Type From="double" To="double.MinValue" />
+    <Type From="byte[]" To="null" />
+    <Type From="int" To="int.MinValue" />
+    <Type From="float" To="float.MinValue" />
+    <Type From="short" To="short.MinValue" />
+    <Type From="byte" To="byte.MinValue" />
+    <Type From="Guid" To="Guid.Empty" />
+  </Language>
+</Languages>

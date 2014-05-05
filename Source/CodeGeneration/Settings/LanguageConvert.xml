@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Languages>
+  <Language From="C#" To="Convert">
+    <Type From="long" To="Convert.ToInt64" />
+    <Type From="object" To="" />
+    <Type From="bool" To="Convert.ToBoolean" />
+    <Type From="string" To="Convert.ToString" />
+    <Type From="DateTime" To="Convert.ToDateTime" />
+    <Type From="decimal" To="Convert.ToDecimal" />
+    <Type From="double" To="Convert.ToDouble" />
+    <Type From="byte[]" To="(byte[])" />
+    <Type From="int" To="Convert.ToInt32" />
+    <Type From="float" To="Convert.ToSingle" />
+    <Type From="short" To="Convert.ToInt16" />
+    <Type From="byte" To="Convert.ToByte" />
+    <Type From="Guid" To="(Guid)" />
+  </Language>
+</Languages>

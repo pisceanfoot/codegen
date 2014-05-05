@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGeneration", "CodeGeneration\CodeGeneration.csproj", "{FE23CD28-EAC3-4669-A046-30D2EB674E06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsUI", "WinFormsUI\WinFormsUI.csproj", "{C75532C4-765B-418E-B09B-46D36B2ABDB1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chinabest.SQLServer.SmoUtilities", "Chinabest.SQLServer.SmoUtilities\Chinabest.SQLServer.SmoUtilities.csproj", "{CAA46BAF-6DDD-4666-8DF7-9224132BEB06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CGCoreLib", "CGCoreLib\CGCoreLib.csproj", "{55AD0DAD-BF78-4D91-82B6-E507F7B5CB38}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{6911987B-FA1C-4ACD-AA1B-FB1324DC2944}"
+	ProjectSection(SolutionItems) = preProject
+		Lib\Commons.dll = Lib\Commons.dll
+		Lib\log4net.dll = Lib\log4net.dll
+		Lib\LTP.TextEditor.dll = Lib\LTP.TextEditor.dll
+		Lib\Microsoft.SqlServer.BatchParser.dll = Lib\Microsoft.SqlServer.BatchParser.dll
+		Lib\Microsoft.SqlServer.ConnectionInfo.dll = Lib\Microsoft.SqlServer.ConnectionInfo.dll
+		Lib\Microsoft.SqlServer.Management.Sdk.Sfc.dll = Lib\Microsoft.SqlServer.Management.Sdk.Sfc.dll
+		Lib\Microsoft.SqlServer.Replication.dll = Lib\Microsoft.SqlServer.Replication.dll
+		Lib\Microsoft.SqlServer.Smo.dll = Lib\Microsoft.SqlServer.Smo.dll
+		Lib\Microsoft.SqlServer.SmoExtended.dll = Lib\Microsoft.SqlServer.SmoExtended.dll
+		Lib\NVelocity.dll = Lib\NVelocity.dll
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FE23CD28-EAC3-4669-A046-30D2EB674E06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE23CD28-EAC3-4669-A046-30D2EB674E06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE23CD28-EAC3-4669-A046-30D2EB674E06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE23CD28-EAC3-4669-A046-30D2EB674E06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C75532C4-765B-418E-B09B-46D36B2ABDB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAA46BAF-6DDD-4666-8DF7-9224132BEB06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAA46BAF-6DDD-4666-8DF7-9224132BEB06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAA46BAF-6DDD-4666-8DF7-9224132BEB06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAA46BAF-6DDD-4666-8DF7-9224132BEB06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55AD0DAD-BF78-4D91-82B6-E507F7B5CB38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55AD0DAD-BF78-4D91-82B6-E507F7B5CB38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55AD0DAD-BF78-4D91-82B6-E507F7B5CB38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55AD0DAD-BF78-4D91-82B6-E507F7B5CB38}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

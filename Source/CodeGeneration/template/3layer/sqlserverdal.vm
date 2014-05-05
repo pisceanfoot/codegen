@@ -1,0 +1,320 @@
+﻿/***************************************************************************
+文件名：		${class.Name.ToLower()}.cs
+Copyright  (c)  2006-2007 偷懒码农
+编写人：		Code Generation
+改写者：		无
+改写日期：		无
+*****************************************************************************/
+#region using
+using System;
+using System.Text;
+using System.Data;
+using System.Data.SqlClient;
+using System.Collections.Generic;
+using ChinaBest.Common.DataUtilities;
+using ${namespace}.IDAL;
+#endregion
+
+/// <summary>
+/// 定义 SqlServerDAL
+/// </summary>
+namespace ${namespace}.SqlServerDAL
+{
+	public partial class ${class.PascalCaseName} : I${class.PascalCaseName}
+	{
+		#region 构造函数
+		/// <summary>
+		/// 默认构造函数
+		/// </summary>
+		public ${class.PascalCaseName}()
+		{
+		}
+		#endregion
+	    
+		#region 成员方法
+## PK START
+#if($class.PK)
+		/// <summary>
+		/// 是否存在该记录
+		/// </summary>
+		public bool Exists($class.PK.LanguageType $class.PK.CamelCaseName)
+		{
+			StringBuilder sql = new StringBuilder();
+			sql.Append("SELECT NULL FROM [${class.Name}]");
+			sql.Append(" WHERE [${class.PK.Name}] = @${class.PK.Name}");
+
+			ChinaBest.Common.DBConnection.${database}DBConniton conn = new ChinaBest.Common.DBConnection.${database}DBConniton(ChinaBest.Common.DBConnection.DatabaseType.DatabaseName.SQLServer);
+
+			using (SqlDatabase DataBase = new SqlDatabase((SqlConnection)conn.Instance()))
+			{
+				SqlParameter[] parameters = {
+				DataBase.MakeInParam("@${class.PK.Name}", ${class.PK.SqlClientType}, ${class.PK.Precision}, ${class.PK.CamelCaseName})
+				};
+
+				SqlDataReader reader = DataBase.ReturnDataReader_ExecuteSQL(sql.ToString(), parameters);
+				if (reader != null)
+				{
+					bool result = reader.Read();
+					reader.Close();
+					return result;
+				}
+				
+				return false;
+			}
+		}
+#end
+## PK END
+##仅表拥有添加修改删除
+##视图仅查看
+#if ($class.Type == "table")
+#set($index = 0)
+#set($pindex = 0)
+#set($sql = "")
+#set($para = "")
+#set($update_para = "")
+#foreach($column in $class.Columns)
+	#if (!$column.AutoIncrement)
+		#if ($index == 0)
+			#set($sql = "[$column.Name]")
+			#set($para = "@$column.Name")
+		#else
+			#set($sql = "$sql, [$column.Name]")
+			#set($para = "$para, @$column.Name")
+		#end
+		#if (!$column.IsPrimaryKey)
+		#if($pindex == 0)
+			#set($update_para = "[$column.Name] = @$column.Name")
+		#else
+			#set($update_para = "$update_para, [$column.Name] = @$column.Name")
+		#end
+		#set($pindex = $pindex + 1)
+		#end
+	#set($index = $index + 1)
+	#end
+#end
+#set($index = 0)
+#set($pindex = 0)
+
+		/// <summary>
+		/// 增加一条数据
+		/// </summary>
+		public bool Add(${namespace}.Model.${class.PascalCaseName} $class.CamelCaseName)
+		{
+			string sql = "INSERT INTO [${class.Name}] ({0}) VALUES ({1})";
+			StringBuilder p = new StringBuilder();
+			StringBuilder v = new StringBuilder();
+			
+			ChinaBest.Common.DBConnection.${database}DBConniton conn = new ChinaBest.Common.DBConnection.${database}DBConniton(ChinaBest.Common.DBConnection.DatabaseType.DatabaseName.SQLServer);
+
+			using (SqlDatabase DataBase = new SqlDatabase((SqlConnection)conn.Instance()))
+			{
+				List<SqlParameter> parameterList = new List<SqlParameter>();
+
+#foreach($column in $class.Columns)
+#if (!${column.AutoIncrement})
+				if(!${class.CamelCaseName}.${column.PascalCaseName}.Equals(${column.EmptyValue}))
+				{
+					p.Append(" ${column.Name},");
+					v.Append(" @${column.Name},");
+					parameterList.Add(DataBase.MakeInParam("@${column.Name}", $column.SqlClientType, $column.Precision, ${class.CamelCaseName}.${column.PascalCaseName}));
+				}
+#end
+#end
+				if(p.Length > 0)
+				{
+					p = p.Remove(p.Length -1, 1);
+					v = v.Remove(v.Length -1, 1);
+				}
+				
+				string tmpSql = string.Format(sql.ToString(), p.ToString(), v.ToString());
+
+				int result = DataBase.ExecuteSQL(tmpSql, parameterList.ToArray());
+				return result > 0;
+			}
+		}
+		
+## PK START
+#if($class.PK)
+		/// <summary>
+		/// 更新一条数据
+		/// </summary>
+		public bool Update(${namespace}.Model.${class.PascalCaseName} $class.CamelCaseName)
+		{
+			StringBuilder sql = new StringBuilder();
+			sql.Append("UPDATE [${class.Name}] SET ");
+			StringBuilder p = new StringBuilder();
+
+			ChinaBest.Common.DBConnection.${database}DBConniton conn = new ChinaBest.Common.DBConnection.${database}DBConniton(ChinaBest.Common.DBConnection.DatabaseType.DatabaseName.SQLServer);
+
+			using (SqlDatabase DataBase = new SqlDatabase((SqlConnection)conn.Instance()))
+			{
+				List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+
+#foreach($column in $class.Columns)
+#if(!$column.AutoIncrement && !$column.IsPrimaryKey)
+				if(!${class.CamelCaseName}.${column.PascalCaseName}.Equals(${column.EmptyValue}))
+				{
+					p.Append(" , ${column.Name} = @${column.Name}");
+					sqlParameterList.Add(DataBase.MakeInParam("@$column.Name", $column.SqlClientType, $column.Precision, ${class.CamelCaseName}.${column.PascalCaseName}));
+#set($index = $index + 1)
+				}
+#end
+#end
+				sql.Append(p.ToString().TrimStart(' ', ','));
+				sql.Append(" WHERE [${class.PK.Name}] = @${class.PK.Name}");
+				sqlParameterList.Add(DataBase.MakeInParam("@$class.PK.Name", $class.PK.SqlClientType, $class.PK.Precision, ${class.CamelCaseName}.${class.PK.PascalCaseName}));
+
+				int result = DataBase.ExecuteSQL(sql.ToString(), sqlParameterList.ToArray());
+				return result > 0;
+			}
+		}
+#set($index = 0) 
+
+		/// <summary>
+		/// 删除一条数据
+		/// </summary>
+		public bool Delete($class.PK.LanguageType $class.PK.CamelCaseName)
+		{
+			StringBuilder sql = new StringBuilder();
+			sql.Append("DELETE [${class.Name}] ");
+			sql.Append(" WHERE [${class.PK.Name}] = @${class.PK.Name}");
+
+			ChinaBest.Common.DBConnection.${database}DBConniton conn = new ChinaBest.Common.DBConnection.${database}DBConniton(ChinaBest.Common.DBConnection.DatabaseType.DatabaseName.SQLServer);
+
+			using (SqlDatabase DataBase = new SqlDatabase((SqlConnection)conn.Instance()))
+			{
+				SqlParameter[] parameters = {
+					DataBase.MakeInParam("@${class.PK.Name}", ${class.PK.SqlClientType}, ${class.PK.Precision}, ${class.PK.CamelCaseName})        
+				};
+
+				int result = DataBase.ExecuteSQL(sql.ToString(), parameters);
+				return result > 0;
+			}
+		}
+#end
+## PK END
+#end
+## TABLE END
+		/// <summary>
+		/// 获取 $class.PascalCaseName 集合
+		/// </summary>
+		public List<${namespace}.Model.$class.PascalCaseName> GetItems()
+		{
+			StringBuilder sql = new StringBuilder();
+			sql.Append("SELECT * FROM [${class.Name}]");
+			List<${namespace}.Model.$class.PascalCaseName> list = new List<${namespace}.Model.$class.PascalCaseName>();
+
+			ChinaBest.Common.DBConnection.${database}DBConniton conn = new ChinaBest.Common.DBConnection.${database}DBConniton(ChinaBest.Common.DBConnection.DatabaseType.DatabaseName.SQLServer);
+
+			using (SqlDatabase DataBase = new SqlDatabase((SqlConnection)conn.Instance()))
+			{
+				SqlDataReader reader = DataBase.ReturnDataReader_ExecuteSQL(sql.ToString());
+				if (reader != null)
+				{
+					while (reader.Read())
+					{
+						${namespace}.Model.$class.PascalCaseName $class.CamelCaseName = new ${namespace}.Model.${class.PascalCaseName}();
+#foreach($column in $class.Columns)							
+						if (reader["$column.Name"] != DBNull.Value)
+							${class.CamelCaseName}.${column.PascalCaseName} = ${column.ConvertMethod}(reader["$column.Name"]);
+#end
+
+						list.Add($class.CamelCaseName);
+					}
+					
+					reader.Close();
+				}
+
+				return list;
+			}
+		}
+
+		/// <summary>
+		/// 根据条件获取 $class.PascalCaseName 集合
+		/// </summary>
+		public List<${namespace}.Model.$class.PascalCaseName> GetItemByCondition(${namespace}.Model.$class.PascalCaseName $class.CamelCaseName)
+		{
+			List<SqlParameter> sqlParameterList = new List<SqlParameter>();
+			List<${namespace}.Model.$class.PascalCaseName> list = new List<${namespace}.Model.$class.PascalCaseName>();
+
+			StringBuilder sql = new StringBuilder();
+			sql.Append("SELECT * FROM [${class.Name}]  WHERE ");
+			StringBuilder p = new StringBuilder();
+
+			ChinaBest.Common.DBConnection.${database}DBConniton conn = new ChinaBest.Common.DBConnection.${database}DBConniton(ChinaBest.Common.DBConnection.DatabaseType.DatabaseName.SQLServer);
+
+			using (SqlDatabase DataBase = new SqlDatabase((SqlConnection)conn.Instance()))
+			{
+#foreach($column in $class.Columns)
+				if (!${class.CamelCaseName}.${column.PascalCaseName}.Equals(${column.EmptyValue}))
+				{
+					p.Append(" and ${column.Name} = @${column.Name} ");
+					sqlParameterList.Add(DataBase.MakeInParam("@${column.Name}", ${column.SqlClientType}, ${column.Precision}, ${class.CamelCaseName}.${column.PascalCaseName}));
+				}
+#end
+
+				sql.Append(p.ToString().TrimStart(' ', 'a', 'n', 'd'));
+				SqlDataReader reader = DataBase.ReturnDataReader_ExecuteSQL(sql.ToString(), sqlParameterList.ToArray());
+				if (reader != null)
+				{
+					while (reader.Read())
+					{
+						${namespace}.Model.${class.PascalCaseName} temp = new ${namespace}.Model.${class.PascalCaseName}();
+#foreach($column in $class.Columns)
+						if (reader["${column.Name}"] != DBNull.Value)
+							temp.${column.PascalCaseName} = ${column.ConvertMethod}(reader["${column.Name}"]);
+#end
+						
+						list.Add(temp);
+					}
+					
+					reader.Close();
+				}
+			}
+
+			return list;
+		}
+#set($index = 0) 
+#if($class.PK)
+
+		/// <summary>
+		/// 根据编号获取 $class.PascalCaseName 集合
+		/// </summary>
+		public ${namespace}.Model.$class.PascalCaseName GetItemById(${class.PK.LanguageType} ${class.PK.CamelCaseName})
+		{
+			StringBuilder sql = new StringBuilder();
+			sql.Append("SELECT * FROM [${class.Name}] ");
+			sql.Append("WHERE [${class.PK.Name}] = @${class.PK.Name}");
+
+			${namespace}.Model.${class.PascalCaseName} ${class.CamelCaseName} = null;
+
+			ChinaBest.Common.DBConnection.${database}DBConniton conn = new ChinaBest.Common.DBConnection.${database}DBConniton(ChinaBest.Common.DBConnection.DatabaseType.DatabaseName.SQLServer);
+
+			using (SqlDatabase DataBase = new SqlDatabase((SqlConnection)conn.Instance()))
+			{
+				SqlParameter[] parameters = {
+					DataBase.MakeInParam("@${class.PK.Name}", ${class.PK.SqlClientType}, ${class.PK.Precision}, ${class.PK.CamelCaseName})
+				};
+
+				SqlDataReader reader = DataBase.ReturnDataReader_ExecuteSQL(sql.ToString(), parameters);
+				if (reader != null)
+				{
+					if (reader.Read())
+					{
+						${class.CamelCaseName} = new ${namespace}.Model.${class.PascalCaseName}();
+#foreach($column in $class.Columns)
+						if (reader["${column.Name}"] != DBNull.Value)
+							${class.CamelCaseName}.${column.PascalCaseName} = ${column.ConvertMethod}(reader["${column.Name}"]);
+#end
+					}
+					
+					reader.Close();
+				}
+
+				return ${class.CamelCaseName};
+			}
+		}
+#end
+		#endregion
+	}
+}

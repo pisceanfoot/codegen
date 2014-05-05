@@ -1,0 +1,192 @@
+﻿#region Notice
+/***************************************************************************
+文件名：		${class.Name.ToLower()}.cs
+Copyright  (c)  2006-2010 上海中主信息科技有限公司
+编写人：		Code Generation
+改写者：		无
+改写日期：		$now
+*****************************************************************************/
+#endregion
+
+#region using
+using System;
+using System.Text;
+using System.Collections.Generic;
+#endregion
+
+/// <summary>
+/// 定义 BLL
+/// </summary>
+namespace ${namespace}.BLL
+{
+	public partial class ${class.PascalCaseName}
+	{
+		#region 私有成员变量
+		private ${namespace}.SqlServerDAL.${class.PascalCaseName} ${class.CamelCaseName}Dal = new ${namespace}.SqlServerDAL.${class.PascalCaseName}();
+		#endregion
+		
+		#region 构造函数
+		/// <summary>
+		/// 默认构造函数
+		/// </summary>
+		public ${class.PascalCaseName}()
+		{
+		}
+		#endregion
+	    
+		#region 成员方法
+#set($index = 0)
+#foreach($column in $class.Columns)
+#if ($column.IsPrimaryKey)
+#if ($index == 0)
+        /// <summary>
+        /// 根据编号获取 ${class.PascalCaseName} 集合
+        /// </summary>
+        public bool Exists($column.LanguageType $column.CamelCaseName)
+        {
+            return ${class.CamelCaseName}Dal.Exists($class.PK.CamelCaseName);
+        }
+
+#set($index = $index + 1)
+#end
+#end
+#end
+        /// <summary>
+        /// 是否存在该记录
+        /// </summary>
+        public bool Exists(${namespace}.Model.${class.PascalCaseName} $class.CamelCaseName)
+        {
+		    return ${class.CamelCaseName}Dal.Exists($class.CamelCaseName);
+        }
+#if ($class.Type == "table")
+
+        /// <summary>
+        /// 增加一条数据
+        /// </summary>
+        public bool Add(${namespace}.Model.${class.PascalCaseName} $class.CamelCaseName)
+        {
+            return ${class.CamelCaseName}Dal.Add($class.CamelCaseName);
+        }
+#if($class.PK)
+
+        /// <summary>
+        /// 更新一条数据
+        /// </summary>
+        public bool Update(${namespace}.Model.${class.PascalCaseName} $class.CamelCaseName)
+        {
+            return ${class.CamelCaseName}Dal.Update($class.CamelCaseName);
+        }
+#end
+#foreach($column in $class.Columns)
+#if ($column.IsPrimaryKey)
+
+        /// <summary>
+        /// 删除一条数
+        /// </summary>
+        public bool Delete($column.LanguageType $column.CamelCaseName)
+        {
+            return ${class.CamelCaseName}Dal.Delete($column.CamelCaseName);
+        }
+#end
+#end
+#end
+## end table
+
+        /// <summary>
+        /// 获取 ${class.PascalCaseName} 集合
+        /// </summary>
+        public List<${namespace}.Model.${class.PascalCaseName}> GetItems()
+        {
+            return ${class.CamelCaseName}Dal.GetItems();
+        }
+        
+        /// <summary>
+        /// 获取 ${class.PascalCaseName} 集合
+        /// </summary>
+        public List<${namespace}.Model.${class.PascalCaseName}> GetItemsOrderBy(string orderBy)
+        {
+            return ${class.CamelCaseName}Dal.GetItemsOrderBy(orderBy);
+        }
+        
+        /// <summary>
+        /// 获取 ${class.PascalCaseName} 集合
+        /// </summary>
+        public List<${namespace}.Model.${class.PascalCaseName}> GetItems(string selectColumn)
+        {
+            return ${class.CamelCaseName}Dal.GetItems(selectColumn);
+        }
+        
+        /// <summary>
+        /// 获取 ${class.PascalCaseName} 集合
+        /// </summary>
+        public List<${namespace}.Model.${class.PascalCaseName}> GetItems(string selectColumn, string orderBy)
+        {
+            return ${class.CamelCaseName}Dal.GetItems(selectColumn, orderBy);
+        }
+
+        /// <summary>
+        /// 根据条件获取 ${class.PascalCaseName} 集合
+        /// </summary>
+        public List<${namespace}.Model.${class.PascalCaseName}> GetItemListByCondition(${namespace}.Model.${class.PascalCaseName} $class.CamelCaseName)
+        {
+            return ${class.CamelCaseName}Dal.GetItemListByCondition($class.CamelCaseName);
+        }
+        
+        /// <summary>
+        /// 根据条件获取 ${class.PascalCaseName} 集合
+        /// </summary>
+        public List<${namespace}.Model.${class.PascalCaseName}> GetItemListByCondition(${namespace}.Model.${class.PascalCaseName} $class.CamelCaseName, string selectColumn)
+        {
+            return ${class.CamelCaseName}Dal.GetItemListByCondition($class.CamelCaseName, selectColumn);
+        }
+        
+        /// <summary>
+        /// 根据条件获取 ${class.PascalCaseName} 集合
+        /// </summary>
+        public List<${namespace}.Model.${class.PascalCaseName}> GetItemListByCondition(${namespace}.Model.${class.PascalCaseName} $class.CamelCaseName, string selectColumn, string orderBy)
+        {
+            return ${class.CamelCaseName}Dal.GetItemListByCondition($class.CamelCaseName, selectColumn, orderBy);
+        }
+        
+#set($index = 0)
+#foreach($column in $class.Columns)
+#if ($column.IsPrimaryKey)
+#if ($index == 0)
+        /// <summary>
+        /// 根据编号获取 ${class.PascalCaseName} 集合
+        /// </summary>
+        public ${namespace}.Model.${class.PascalCaseName} GetItemById($column.LanguageType $column.CamelCaseName)
+        {
+            return ${class.CamelCaseName}Dal.GetItemById($column.CamelCaseName);
+        }
+        
+        /// <summary>
+        /// 根据编号获取 ${class.PascalCaseName} 集合
+        /// </summary>
+        public ${namespace}.Model.${class.PascalCaseName} GetItemById($column.LanguageType $column.CamelCaseName, string selectColumn)
+        {
+            return ${class.CamelCaseName}Dal.GetItemById($column.CamelCaseName, selectColumn);
+        }
+#set($index = $index + 1)
+#end
+#end
+#end
+
+        /// <summary>
+        /// 根据编号获取 ${class.PascalCaseName} 集合
+        /// </summary>
+        public ${namespace}.Model.${class.PascalCaseName} GetItemByCondition(${namespace}.Model.${class.PascalCaseName} $class.CamelCaseName)
+        {
+            return ${class.CamelCaseName}Dal.GetItemByCondition($class.CamelCaseName);
+        }
+        
+        /// <summary>
+        /// 根据编号获取 ${class.PascalCaseName} 集合
+        /// </summary>
+        public ${namespace}.Model.${class.PascalCaseName} GetItemByCondition(${namespace}.Model.${class.PascalCaseName} $class.CamelCaseName, string selectColumn)
+        {
+            return ${class.CamelCaseName}Dal.GetItemByCondition($class.CamelCaseName, selectColumn);
+        }
+		#endregion
+	}
+}
